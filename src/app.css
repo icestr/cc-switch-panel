@@ -248,9 +248,10 @@ body {
 }
 
 .heatmap-cell {
-  flex: 1;
+  flex: 0 1 16px;
   aspect-ratio: 1;
-  min-width: 12px;
+  min-width: 8px;
+  max-width: 16px;
   border-radius: 3px;
   background: var(--bg-elevated);
 }
@@ -263,7 +264,8 @@ body {
 }
 
 .heatmap-date-labels span {
-  flex: 1;
+  flex: 0 1 16px;
+  max-width: 16px;
   font-family: var(--font-mono);
   font-size: 9px;
   color: var(--text-tertiary);
