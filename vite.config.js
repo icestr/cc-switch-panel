@@ -22,5 +22,6 @@ function rpcPlugin() {
 
 export default defineConfig({
   plugins: [react(), rpcPlugin()],
+  server: { port: 24800 },
   build: { outDir: 'dist' }
 });
