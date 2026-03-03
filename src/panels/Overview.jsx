@@ -1,7 +1,7 @@
 import { useRpc } from '../hooks/useRpc';
 import { BarChart, Bar, ResponsiveContainer, XAxis, Tooltip } from 'recharts';
 import { fmtTokens, fmtUsd, fmtPct, shortModel } from '../lib/format';
-import { COLORS, TIP, AXIS } from '../lib/chart-theme';
+import { COLORS, TIP, AXIS, LABEL_STYLE } from '../lib/chart-theme';
 
 const allHours = Array.from({ length: 24 }, (_, i) => String(i).padStart(2, '0'));
 
@@ -20,7 +20,7 @@ function HourMiniChart({ data }) {
         <Tooltip
           contentStyle={TIP}
           formatter={(v, name) => [name === 'cost' ? fmtUsd(v) : v]}
-          labelStyle={{ color: '#8b8b96', fontSize: 11 }}
+          labelStyle={LABEL_STYLE}
         />
         <Bar dataKey="requests" fill={COLORS.primary} radius={[2, 2, 0, 0]} />
       </BarChart>
@@ -28,9 +28,9 @@ function HourMiniChart({ data }) {
   );
 }
 
-export default function Overview({ tick }) {
+export default function Overview({ days, tick }) {
   const { data: today } = useRpc('getTodayDetail', {}, tick);
-  const { data: period } = useRpc('getOverview', { days: 7 }, tick);
+  const { data: period } = useRpc('getOverview', { days }, tick);
 
   if (!today || !period)
     return <div className="today-hero"><span className="today-loading">加载中...</span></div>;
@@ -88,7 +88,7 @@ export default function Overview({ tick }) {
         <span>7d: {fmtUsd(period.totalCost)}</span>
         <span>{fmtTokens(period.totalTokens)} tokens</span>
         <span>{Number(period.totalRequests).toLocaleString()} reqs</span>
-        <span>err {period.errorRate}%</span>
+        <span>err {fmtPct(period.errorRate)}</span>
         <span>avg {period.avgLatency}ms</span>
       </div>
     </div>

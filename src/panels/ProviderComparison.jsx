@@ -1,5 +1,5 @@
 import { useRpc } from '../hooks/useRpc';
-import { fmtUsd, fmtMs, fmtPct } from '../lib/format';
+import { fmtUsd, fmtPct } from '../lib/format';
 import { COLORS } from '../lib/chart-theme';
 
 export default function ProviderComparison({ days, tick }) {

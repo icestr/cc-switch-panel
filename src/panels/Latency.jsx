@@ -1,7 +1,7 @@
 import { useRpc } from '../hooks/useRpc';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { shortModel } from '../lib/format';
-import { COLORS, TIP, AXIS } from '../lib/chart-theme';
+import { COLORS, TIP, AXIS, LEGEND_STYLE } from '../lib/chart-theme';
 
 export default function Latency({ days, tick }) {
   const { data } = useRpc('getLatencyStats', { days }, tick);
@@ -17,7 +17,7 @@ export default function Latency({ days, tick }) {
               tickFormatter={shortModel} />
             <Tooltip contentStyle={TIP}
               formatter={v => [v + 'ms']} labelFormatter={shortModel} />
-            <Legend wrapperStyle={{ fontSize: 11, color: '#8b8b96' }} />
+            <Legend wrapperStyle={LEGEND_STYLE} />
             <Bar dataKey="avgLatency" fill={COLORS.primary} name="平均延迟" />
             <Bar dataKey="avgFirstToken" fill={COLORS.success} name="首Token" />
           </BarChart>

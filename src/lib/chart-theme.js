@@ -25,5 +25,9 @@ export const TIP = {
 export const AXIS = {
   fill: '#55555e',
   fontSize: 11,
-  fontFamily: "'JetBrains Mono', monospace",
+  fontFamily: "'JetBrains Mono', 'SF Mono', monospace",
 };
+
+export const LABEL_STYLE = { color: '#8b8b96', fontSize: 11 };
+
+export const LEGEND_STYLE = { fontSize: 11, color: '#8b8b96' };

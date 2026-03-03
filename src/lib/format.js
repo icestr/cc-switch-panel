@@ -15,4 +15,4 @@ export const fmtPct = n => n == null ? '--' : Number(n).toFixed(1) + '%';
 export const fmtMs = n => n == null ? '--' : Math.round(n) + 'ms';
 
 export const shortModel = m =>
-  m.replace('claude-', '').replace(/-\d{8}$/, '');
+  m ? m.replace('claude-', '').replace(/-\d{8}$/, '') : '--';

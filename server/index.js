@@ -11,8 +11,12 @@ const app = new Hono();
 app.use('/*', serveStatic({ root: resolve(__dirname, '../dist') }));
 
 app.post('/rpc', async (c) => {
-  const { method, params } = await c.req.json();
-  return c.json(dispatch(method, params));
+  try {
+    const { method, params } = await c.req.json();
+    return c.json(dispatch(method, params));
+  } catch (e) {
+    return c.json({ error: { code: -32700, message: e.message } }, 400);
+  }
 });
 
 const port = 24800;

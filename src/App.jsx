@@ -11,6 +11,8 @@ import ErrorBreakdown from './panels/ErrorBreakdown';
 import ActivityHeatmap from './panels/ActivityHeatmap';
 import SessionInsights from './panels/SessionInsights';
 import ConversationDailySummary from './panels/ConversationDailySummary';
+import ClientDistro from './panels/ClientDistro';
+import ProviderHealth from './panels/ProviderHealth';
 
 const RANGES = [
   { label: '7天', value: 7 },
@@ -49,7 +51,7 @@ export default function App() {
         </div>
       </header>
 
-      <Overview tick={tick} />
+      <Overview days={days} tick={tick} />
 
       <Section title="费用与用量">
         <div className="grid-2">
@@ -66,6 +68,10 @@ export default function App() {
         <div className="grid-2-equal">
           <RouteAnalysis days={days} tick={tick} />
           <ProviderComparison days={days} tick={tick} />
+        </div>
+        <div className="grid-2-equal mt-3">
+          <ClientDistro days={days} tick={tick} />
+          <ProviderHealth tick={tick} />
         </div>
       </Section>
 

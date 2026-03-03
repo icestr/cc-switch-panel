@@ -588,3 +588,116 @@ body {
 .mt-3 {
   margin-top: 16px;
 }
+
+/* client distro */
+.client-distro-layout {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.client-distro-chart { flex: 0 0 180px; }
+.client-distro-stats { flex: 1; }
+
+.client-stat-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 0;
+  font-size: 12px;
+  font-family: var(--font-mono);
+}
+
+.client-stat-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.client-stat-name {
+  min-width: 56px;
+  color: var(--text-secondary);
+  font-size: 11px;
+}
+
+.client-stat-val {
+  min-width: 60px;
+  text-align: right;
+  color: var(--text-tertiary);
+  font-size: 11px;
+}
+
+/* provider health */
+.health-summary {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.health-ratio {
+  font-family: var(--font-mono);
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.health-label {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.health-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.health-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 8px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  border-radius: 4px;
+}
+
+.health-row:hover { background: var(--bg-elevated); }
+
+.health-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.health-dot--ok { background: var(--color-success); box-shadow: 0 0 4px rgba(61, 214, 140, 0.4); }
+.health-dot--fail { background: var(--color-danger); box-shadow: 0 0 4px rgba(239, 100, 97, 0.4); }
+
+.health-name {
+  color: var(--text-secondary);
+  min-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.health-app {
+  color: var(--text-tertiary);
+  min-width: 50px;
+}
+
+.health-failures {
+  font-weight: 600;
+  min-width: 30px;
+  text-align: right;
+}
+
+.health-time {
+  color: var(--text-tertiary);
+  margin-left: auto;
+  white-space: nowrap;
+}

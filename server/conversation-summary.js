@@ -57,24 +57,7 @@ function normalizeProjectPath(project) {
   return name || clean || '未识别项目';
 }
 
-function extractCodexUserText(content) {
-  if (!content) return '';
-  if (typeof content === 'string') return content;
-  if (!Array.isArray(content)) return '';
-
-  const texts = [];
-  for (const item of content) {
-    if (!item) continue;
-    if (typeof item === 'string') {
-      texts.push(item);
-      continue;
-    }
-    if (typeof item.text === 'string') texts.push(item.text);
-  }
-  return texts.join('\n');
-}
-
-function extractGeminiUserText(content) {
+function extractUserText(content) {
   if (!content) return '';
   if (typeof content === 'string') return content;
   if (!Array.isArray(content)) return '';
@@ -247,7 +230,7 @@ function parseCodexEvents(sinceTs) {
       if (!Number.isFinite(ts)) continue;
       if (sinceTs && ts < sinceTs) continue;
 
-      const prompt = compactText(extractCodexUserText(payload.content));
+      const prompt = compactText(extractUserText(payload.content));
       if (isNoisePrompt(prompt)) continue;
 
       events.push({
@@ -296,7 +279,7 @@ function parseGeminiEvents(sinceTs) {
       if (!Number.isFinite(ts)) continue;
       if (sinceTs && ts < sinceTs) continue;
 
-      const prompt = compactText(extractGeminiUserText(msg.content));
+      const prompt = compactText(extractUserText(msg.content));
       if (isNoisePrompt(prompt)) continue;
 
       events.push({

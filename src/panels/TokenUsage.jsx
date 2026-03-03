@@ -1,7 +1,7 @@
 import { useRpc } from '../hooks/useRpc';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { fmtTokens } from '../lib/format';
-import { COLORS, TIP, AXIS } from '../lib/chart-theme';
+import { COLORS, TIP, AXIS, LEGEND_STYLE } from '../lib/chart-theme';
 
 export default function TokenUsage({ days, tick }) {
   const { data } = useRpc('getTokenUsage', { days }, tick);
@@ -15,7 +15,7 @@ export default function TokenUsage({ days, tick }) {
             <XAxis dataKey="date" tick={AXIS} tickFormatter={v => v.slice(5)} />
             <YAxis tick={AXIS} tickFormatter={fmtTokens} />
             <Tooltip contentStyle={TIP} formatter={v => [fmtTokens(v)]} />
-            <Legend wrapperStyle={{ fontSize: 11, color: '#8b8b96' }} />
+            <Legend wrapperStyle={LEGEND_STYLE} />
             <Bar dataKey="output" stackId="1" fill={COLORS.primary} name="输出" />
             <Bar dataKey="input" stackId="1" fill={COLORS.secondary} name="输入" />
             <Bar dataKey="cacheRead" stackId="1" fill={COLORS.success} name="缓存读取" />
