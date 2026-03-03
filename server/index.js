@@ -15,7 +15,7 @@ app.post('/rpc', async (c) => {
   return c.json(dispatch(method, params));
 });
 
-const port = 3456;
+const port = 24800;
 serve({ fetch: app.fetch, port }, () => {
   console.log(`Panel running at http://localhost:${port}`);
 });
