@@ -311,6 +311,20 @@ body {
   font-size: 12px;
 }
 
+.provider-header {
+  padding-bottom: 4px;
+  margin-bottom: 2px;
+  border-bottom: 1px solid var(--border);
+}
+
+.provider-header .provider-stat,
+.provider-header .provider-name {
+  color: var(--text-tertiary);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+}
+
 .provider-name {
   min-width: 100px;
   font-family: var(--font-mono);
