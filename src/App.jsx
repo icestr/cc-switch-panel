@@ -44,7 +44,7 @@ function ProcessIndicator({ tick }) {
       {active.map(p => (
         <span key={p.name} className="process-badge">
           <span className="process-dot" />
-          {p.name} <span className="process-count">{p.count}</span>
+          <span className="process-count">{p.count}</span> 个 {p.name} 进程
         </span>
       ))}
     </div>
