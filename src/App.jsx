@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { useRpc } from './hooks/useRpc';
 import Overview from './panels/Overview';
 import CostTrend from './panels/CostTrend';
 import CacheEfficiency from './panels/CacheEfficiency';
@@ -32,6 +33,24 @@ function Section({ title, children }) {
   );
 }
 
+function ProcessIndicator({ tick }) {
+  const { data } = useRpc('getActiveProcesses', {}, tick, 10000);
+  if (!data) return null;
+  const active = data.filter(p => p.count > 0);
+  if (!active.length) return null;
+
+  return (
+    <div className="process-indicator">
+      {active.map(p => (
+        <span key={p.name} className="process-badge">
+          <span className="process-dot" />
+          {p.name} <span className="process-count">{p.count}</span>
+        </span>
+      ))}
+    </div>
+  );
+}
+
 export default function App() {
   const [days, setDays] = useState(7);
   const [tick, setTick] = useState(0);
@@ -40,7 +59,10 @@ export default function App() {
   return (
     <div className="dashboard">
       <header className="header">
-        <h1>cc-switch</h1>
+        <div className="header-left">
+          <h1>cc-switch</h1>
+          <ProcessIndicator tick={tick} />
+        </div>
         <div className="controls">
           {RANGES.map(r => (
             <button key={r.value} className={days === r.value ? 'active' : ''} onClick={() => setDays(r.value)}>

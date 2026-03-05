@@ -52,6 +52,12 @@ body {
   margin-bottom: 4px;
 }
 
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
 .header h1 {
   font-family: var(--font-title);
   font-size: 15px;
@@ -85,6 +91,45 @@ body {
 
 .refresh-btn { margin-left: 12px; }
 .refresh-btn:hover { color: var(--color-primary) !important; }
+
+/* process indicator */
+.process-indicator {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.process-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: 6px;
+  padding: 3px 10px;
+}
+
+.process-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-success);
+  box-shadow: 0 0 6px rgba(61, 214, 140, 0.5);
+  animation: process-pulse 2s ease-in-out infinite;
+}
+
+.process-count {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+@keyframes process-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
 
 /* today hero */
 .today-hero {

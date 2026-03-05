@@ -1,3 +1,4 @@
+import { execSync } from 'node:child_process';
 import db from './db.js';
 import { getConversationDailySummary } from './conversation-summary.js';
 
@@ -333,6 +334,27 @@ methods.getProviderHealth = () => {
 
 methods.getConversationDailySummary = ({ days = 7 }) => {
   return getConversationDailySummary({ days });
+};
+
+methods.getActiveProcesses = () => {
+  const targets = [
+    { name: 'claude', exe: 'claude.exe' },
+    { name: 'codex', exe: 'codex.exe' },
+  ];
+  const result = [];
+  for (const t of targets) {
+    try {
+      const out = execSync(
+        `tasklist /FI "IMAGENAME eq ${t.exe}" /NH /FO CSV`,
+        { encoding: 'utf-8', timeout: 3000, windowsHide: true }
+      );
+      const count = out.split('\n').filter(line => line.includes(t.exe)).length;
+      result.push({ name: t.name, count });
+    } catch {
+      result.push({ name: t.name, count: 0 });
+    }
+  }
+  return result;
 };
 
 export function dispatch(method, params) {
