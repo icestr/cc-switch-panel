@@ -147,11 +147,22 @@ body {
 
 .today-kpis {
   display: flex;
-  gap: 48px;
-  align-items: baseline;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 24px;
   padding-bottom: 20px;
   border-bottom: 1px solid var(--border-subtle);
+}
+
+.today-kpis-left {
+  display: flex;
+  gap: 48px;
+  align-items: baseline;
+}
+
+.daily-token-mini {
+  width: 260px;
+  flex-shrink: 0;
 }
 
 .today-kpi {}
@@ -645,6 +656,8 @@ body {
 @media (max-width: 900px) {
   .dashboard { padding: 20px 16px; }
   .today-kpis { flex-wrap: wrap; gap: 24px; }
+  .today-kpis-left { flex-wrap: wrap; gap: 24px; }
+  .daily-token-mini { width: 100%; }
   .today-breakdown { flex-direction: column; gap: 16px; }
   .grid-2, .grid-2-equal, .grid-3 { grid-template-columns: 1fr; }
   .summary-kpis { grid-template-columns: 1fr 1fr; }

@@ -1,5 +1,5 @@
 import { useRpc } from '../hooks/useRpc';
-import { BarChart, Bar, ResponsiveContainer, XAxis, Tooltip } from 'recharts';
+import { BarChart, Bar, ResponsiveContainer, XAxis, YAxis, Tooltip, Cell } from 'recharts';
 import { fmtTokens, fmtUsd, fmtPct, shortModel } from '../lib/format';
 import { COLORS, TIP, AXIS, LABEL_STYLE } from '../lib/chart-theme';
 
@@ -28,9 +28,40 @@ function HourMiniChart({ data }) {
   );
 }
 
+function DailyTokenMini({ data }) {
+  if (!data || data.length < 2) return null;
+  const recent = data.slice(-7).map(d => ({
+    date: d.date.slice(5),
+    total: (d.input || 0) + (d.output || 0) + (d.cacheRead || 0) + (d.cacheCreation || 0),
+  }));
+  const todayDate = recent[recent.length - 1]?.date;
+  return (
+    <div className="daily-token-mini">
+      <span className="today-label">近日 Token</span>
+      <ResponsiveContainer width="100%" height={64}>
+        <BarChart data={recent} margin={{ top: 16, right: 0, bottom: 0, left: 0 }}>
+          <XAxis dataKey="date" tick={AXIS} />
+          <YAxis hide />
+          <Tooltip
+            contentStyle={TIP}
+            labelStyle={LABEL_STYLE}
+            formatter={v => [fmtTokens(v), 'Token']}
+          />
+          <Bar dataKey="total" radius={[2, 2, 0, 0]}>
+            {recent.map((d, i) => (
+              <Cell key={i} fill={d.date === todayDate ? COLORS.primary : COLORS.muted} fillOpacity={d.date === todayDate ? 1 : 0.5} />
+            ))}
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
 export default function Overview({ days, tick }) {
   const { data: today } = useRpc('getTodayDetail', {}, tick);
   const { data: period } = useRpc('getOverview', { days }, tick);
+  const { data: tokenDaily } = useRpc('getTokenUsage', { days: 7 }, tick);
 
   if (!today || !period)
     return <div className="today-hero"><span className="today-loading">加载中...</span></div>;
@@ -42,24 +73,27 @@ export default function Overview({ days, tick }) {
   return (
     <div className="today-hero">
       <div className="today-kpis">
-        <div className="today-kpi">
-          <span className="today-label">今日 Token</span>
-          <span className="kpi-value kpi-value--xl">{fmtTokens(today.totalTokens)}</span>
-        </div>
-        <div className="today-kpi">
-          <span className="today-label">今日费用</span>
-          <span className="kpi-value kpi-value--lg">{fmtUsd(today.cost)}</span>
-        </div>
-        <div className="today-kpi">
-          <span className="today-label">请求数</span>
-          <span className="kpi-value kpi-value--md">{today.requests}</span>
-        </div>
-        {cacheHitRate && (
+        <div className="today-kpis-left">
           <div className="today-kpi">
-            <span className="today-label">缓存命中</span>
-            <span className="kpi-value kpi-value--md kpi-value--success">{cacheHitRate}%</span>
+            <span className="today-label">今日 Token</span>
+            <span className="kpi-value kpi-value--xl">{fmtTokens(today.totalTokens)}</span>
           </div>
-        )}
+          <div className="today-kpi">
+            <span className="today-label">今日费用</span>
+            <span className="kpi-value kpi-value--lg">{fmtUsd(today.cost)}</span>
+          </div>
+          <div className="today-kpi">
+            <span className="today-label">请求数</span>
+            <span className="kpi-value kpi-value--md">{today.requests}</span>
+          </div>
+          {cacheHitRate && (
+            <div className="today-kpi">
+              <span className="today-label">缓存命中</span>
+              <span className="kpi-value kpi-value--md kpi-value--success">{cacheHitRate}%</span>
+            </div>
+          )}
+        </div>
+        <DailyTokenMini data={tokenDaily} />
       </div>
 
       <div className="today-breakdown">
