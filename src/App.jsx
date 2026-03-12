@@ -75,12 +75,14 @@ export default function App() {
 
       <Overview days={days} tick={tick} />
 
+      <ActivityHeatmap days={days} tick={tick} />
+
       <Section title="费用与用量">
         <div className="grid-2">
           <CostTrend days={days} tick={tick} />
           <CacheEfficiency days={days} tick={tick} />
         </div>
-        <div className="grid-2-equal mt-3">
+        <div className="grid-2 mt-3">
           <TokenUsage days={days} tick={tick} />
           <ModelDistro days={days} tick={tick} />
         </div>
@@ -107,7 +109,6 @@ export default function App() {
       <Section title="会话与活动">
         <SessionInsights days={days} tick={tick} />
         <ConversationDailySummary days={days} tick={tick} />
-        <ActivityHeatmap days={days} tick={tick} />
       </Section>
     </div>
   );
