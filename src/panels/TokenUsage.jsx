@@ -9,14 +9,14 @@ function CustomTooltip({ active, payload, label }) {
   const total = payload.reduce((s, p) => s + (p.value || 0), 0);
   return (
     <div style={TIP}>
-      <div style={{ marginBottom: 6, color: '#e8e8ec', fontWeight: 600 }}>{label}</div>
+      <div style={{ marginBottom: 6, color: 'var(--text-primary)', fontWeight: 600 }}>{label}</div>
       {payload.map(p => (
         <div key={p.dataKey} style={{ display: 'flex', justifyContent: 'space-between', gap: 16, fontSize: 11 }}>
           <span style={{ color: p.color }}>{p.name}</span>
           <span>{fmtTokens(p.value)}</span>
         </div>
       ))}
-      <div style={{ borderTop: '1px solid #2a2a32', marginTop: 6, paddingTop: 6, display: 'flex', justifyContent: 'space-between', gap: 16, fontWeight: 600 }}>
+      <div style={{ borderTop: '1px solid var(--border-default)', marginTop: 6, paddingTop: 6, display: 'flex', justifyContent: 'space-between', gap: 16, fontWeight: 600 }}>
         <span>合计</span>
         <span>{fmtTokens(total)}</span>
       </div>
@@ -27,17 +27,22 @@ function CustomTooltip({ active, payload, label }) {
 export default function TokenUsage({ days, tick }) {
   const { data } = useRpc('getTokenUsage', { days }, tick);
 
-  const periodTotal = useMemo(() => {
-    if (!data) return 0;
-    return data.reduce((s, d) => s + (d.input || 0) + (d.output || 0) + (d.cacheRead || 0) + (d.cacheCreation || 0), 0);
+  const stats = useMemo(() => {
+    if (!data || !data.length) return null;
+    const total = data.reduce((s, d) => s + (d.input || 0) + (d.output || 0) + (d.cacheRead || 0) + (d.cacheCreation || 0), 0);
+    const avg = Math.round(total / data.length);
+    return { total, avg };
   }, [data]);
 
   return (
     <div className="card">
-      <div className="token-usage-header">
-        <h3>Token 用量</h3>
-        {data && <span className="token-usage-total">{fmtTokens(periodTotal)}</span>}
-      </div>
+      <h3>Token 用量</h3>
+      {stats && (
+        <div className="token-usage-stats">
+          <span><span className="split-k">总计 </span><span className="token-usage-val">{fmtTokens(stats.total)}</span></span>
+          <span><span className="split-k">日均 </span><span className="token-usage-val">{fmtTokens(stats.avg)}</span></span>
+        </div>
+      )}
       {!data ? <div className="loading">加载中...</div> : (
         <ResponsiveContainer width="100%" height={240}>
           <BarChart data={data}>
