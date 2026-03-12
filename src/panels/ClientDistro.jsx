@@ -15,6 +15,18 @@ const APP_LABELS = {
   gemini: 'Gemini',
 };
 
+function PieTooltip({ active, payload }) {
+  if (!active || !payload?.length) return null;
+  const d = payload[0];
+  const label = APP_LABELS[d.name] || d.name;
+  return (
+    <div style={{ ...TIP, padding: 10, minWidth: 120 }}>
+      <div style={{ color: d.payload.fill, fontWeight: 600, marginBottom: 4 }}>{label}</div>
+      <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 13, fontWeight: 700 }}>{fmtUsd(d.value)}</div>
+    </div>
+  );
+}
+
 export default function ClientDistro({ days, tick }) {
   const { data } = useRpc('getClientDistro', { days }, tick);
 
@@ -36,7 +48,7 @@ export default function ClientDistro({ days, tick }) {
                   <Cell key={d.app_type} fill={APP_COLORS[d.app_type] || PALETTE[0]} />
                 ))}
               </Pie>
-              <Tooltip contentStyle={TIP} formatter={v => [fmtUsd(v)]} />
+              <Tooltip content={<PieTooltip />} />
             </PieChart>
           </ResponsiveContainer>
         </div>

@@ -1,7 +1,18 @@
 import { useRpc } from '../hooks/useRpc';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { fmtUsd4, shortModel } from '../lib/format';
-import { PALETTE, TIP, LEGEND_STYLE, LABEL_STYLE } from '../lib/chart-theme';
+import { PALETTE, TIP, LEGEND_STYLE } from '../lib/chart-theme';
+
+function PieTooltip({ active, payload }) {
+  if (!active || !payload?.length) return null;
+  const d = payload[0];
+  return (
+    <div style={{ ...TIP, padding: 10, minWidth: 120 }}>
+      <div style={{ color: d.payload.fill, fontWeight: 600, marginBottom: 4 }}>{shortModel(d.name)}</div>
+      <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 13, fontWeight: 700 }}>{fmtUsd4(d.value)}</div>
+    </div>
+  );
+}
 
 export default function ModelDistro({ days, tick }) {
   const { data } = useRpc('getModelDistro', { days }, tick);
@@ -16,7 +27,7 @@ export default function ModelDistro({ days, tick }) {
               innerRadius={50} outerRadius={80} paddingAngle={2} strokeWidth={0}>
               {data.map((_, i) => <Cell key={i} fill={PALETTE[i % PALETTE.length]} />)}
             </Pie>
-            <Tooltip contentStyle={TIP} labelStyle={LABEL_STYLE} formatter={(v, name) => [fmtUsd4(v), shortModel(name)]} />
+            <Tooltip content={<PieTooltip />} />
             <Legend wrapperStyle={LEGEND_STYLE} formatter={shortModel} />
           </PieChart>
         </ResponsiveContainer>
