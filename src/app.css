@@ -599,6 +599,24 @@ body {
 .session-stat { color: var(--text-secondary); min-width: 60px; text-align: right; }
 .session-cost { color: var(--color-primary); min-width: 60px; text-align: right; }
 
+/* token usage header */
+.token-usage-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 18px;
+}
+
+.token-usage-header h3 { margin-bottom: 0; }
+
+.token-usage-total {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
 /* loading */
 .loading {
   color: var(--text-tertiary);
