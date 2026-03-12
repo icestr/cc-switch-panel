@@ -1,7 +1,7 @@
 import { useRpc } from '../hooks/useRpc';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { fmtUsd4, shortModel } from '../lib/format';
-import { PALETTE, TIP, LEGEND_STYLE } from '../lib/chart-theme';
+import { PALETTE, TIP, LEGEND_STYLE, LABEL_STYLE } from '../lib/chart-theme';
 
 export default function ModelDistro({ days, tick }) {
   const { data } = useRpc('getModelDistro', { days }, tick);
@@ -16,7 +16,7 @@ export default function ModelDistro({ days, tick }) {
               innerRadius={50} outerRadius={80} paddingAngle={2} strokeWidth={0}>
               {data.map((_, i) => <Cell key={i} fill={PALETTE[i % PALETTE.length]} />)}
             </Pie>
-            <Tooltip contentStyle={TIP} formatter={v => [fmtUsd4(v)]} />
+            <Tooltip contentStyle={TIP} labelStyle={LABEL_STYLE} formatter={(v, name) => [fmtUsd4(v), shortModel(name)]} />
             <Legend wrapperStyle={LEGEND_STYLE} formatter={shortModel} />
           </PieChart>
         </ResponsiveContainer>

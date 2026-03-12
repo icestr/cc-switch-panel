@@ -19,6 +19,7 @@ export const TIP = {
   borderRadius: 8,
   fontSize: 12,
   fontFamily: "'IBM Plex Sans', sans-serif",
+  color: '#e8e8ec',
   boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
 };
 
