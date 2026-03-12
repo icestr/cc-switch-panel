@@ -5,6 +5,16 @@ import { COLORS, TIP, AXIS, LABEL_STYLE } from '../lib/chart-theme';
 
 const allHours = Array.from({ length: 24 }, (_, i) => String(i).padStart(2, '0'));
 
+function HourTip({ active, payload, label }) {
+  if (!active || !payload?.length) return null;
+  return (
+    <div style={{ ...TIP, padding: 10, minWidth: 80 }}>
+      <div style={{ color: '#8b8b96', fontSize: 11, marginBottom: 4 }}>{label}</div>
+      <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 13, fontWeight: 700 }}>{payload[0].value} reqs</div>
+    </div>
+  );
+}
+
 function HourMiniChart({ data }) {
   const map = Object.fromEntries((data || []).map(d => [d.hour, d]));
   const filled = allHours.map(h => ({
@@ -17,14 +27,20 @@ function HourMiniChart({ data }) {
     <ResponsiveContainer width="100%" height={48}>
       <BarChart data={filled} margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
         <XAxis dataKey="hour" hide />
-        <Tooltip
-          contentStyle={TIP}
-          formatter={(v, name) => [name === 'cost' ? fmtUsd(v) : v]}
-          labelStyle={LABEL_STYLE}
-        />
+        <Tooltip content={<HourTip />} />
         <Bar dataKey="requests" fill={COLORS.primary} radius={[2, 2, 0, 0]} />
       </BarChart>
     </ResponsiveContainer>
+  );
+}
+
+function DailyTokenTip({ active, payload, label }) {
+  if (!active || !payload?.length) return null;
+  return (
+    <div style={{ ...TIP, padding: 10, minWidth: 100 }}>
+      <div style={{ color: '#8b8b96', fontSize: 11, marginBottom: 4 }}>{label}</div>
+      <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 13, fontWeight: 700 }}>{fmtTokens(payload[0].value)}</div>
+    </div>
   );
 }
 
@@ -42,11 +58,7 @@ function DailyTokenMini({ data }) {
         <BarChart data={recent} margin={{ top: 16, right: 0, bottom: 0, left: 0 }}>
           <XAxis dataKey="date" tick={AXIS} />
           <YAxis hide />
-          <Tooltip
-            contentStyle={TIP}
-            labelStyle={LABEL_STYLE}
-            formatter={v => [fmtTokens(v), 'Token']}
-          />
+          <Tooltip content={<DailyTokenTip />} />
           <Bar dataKey="total" radius={[2, 2, 0, 0]}>
             {recent.map((d, i) => (
               <Cell key={i} fill={d.date === todayDate ? COLORS.primary : COLORS.muted} fillOpacity={d.date === todayDate ? 1 : 0.5} />
